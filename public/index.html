@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slack-Graph</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="bg-blob bg-blob--one"></div>
+      <div class="bg-blob bg-blob--two"></div>
+
+      <header class="header-grid">
+        <section class="intro card">
+          <div class="intro-top">
+            <p class="eyebrow">Slack-Graph</p>
+            <span id="statusBadge" class="status-badge">Loading</span>
+          </div>
+          <h1>Map your Slack relationships in a clear and usable network view.</h1>
+          <p class="intro-text">
+            Explore who you collaborate with most, what each connection is about, and how your
+            communication patterns are evolving.
+          </p>
+          <div class="hero-actions">
+            <button id="connectButton" class="primary-button">Connect Slack</button>
+            <button id="demoButton" class="secondary-button">Load Demo Graph</button>
+            <button id="refreshButton" class="secondary-button" disabled>Build from Slack</button>
+          </div>
+          <p id="statusText" class="status-text">Checking Slack connection...</p>
+        </section>
+
+        <section class="metrics card">
+          <article class="metric-card">
+            <span class="metric-label">People</span>
+            <strong id="peopleMetric">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Relationships</span>
+            <strong id="relationshipMetric">0</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Conversations scanned</span>
+            <strong id="conversationMetric">0</strong>
+          </article>
+        </section>
+      </header>
+
+      <section class="setup-wrap card">
+        <form id="slackSetupForm" class="setup-card" hidden>
+          <div class="setup-heading">
+            <h2>Set Up Slack Credentials</h2>
+            <p>
+              Add your Slack app credentials once for local development. This app stores them in
+              your local project.
+            </p>
+          </div>
+          <div class="setup-grid">
+            <label class="setup-field">
+              <span>Client ID</span>
+              <input id="clientIdInput" name="clientId" type="text" autocomplete="off" />
+            </label>
+            <label class="setup-field">
+              <span>Client Secret</span>
+              <input
+                id="clientSecretInput"
+                name="clientSecret"
+                type="password"
+                autocomplete="off"
+              />
+            </label>
+            <label class="setup-field setup-field--full">
+              <span>Redirect URI</span>
+              <input id="redirectUriInput" name="redirectUri" type="text" />
+            </label>
+          </div>
+          <div class="setup-actions">
+            <button id="saveSlackConfigButton" type="submit" class="primary-button">
+              Save Slack Credentials
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <main class="workspace">
+        <section class="graph-panel card">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow eyebrow--small">Graph Controls</p>
+              <h2>Relationship graph</h2>
+            </div>
+            <button id="resetViewButton" class="ghost-button">Reset View</button>
+          </div>
+
+          <div class="controls-grid">
+            <label class="control-field control-field--search">
+              <span>Search people or topics</span>
+              <input id="searchInput" type="search" placeholder="Maya, launch plan, design..." />
+            </label>
+            <label class="control-field">
+              <span>Relationship type</span>
+              <select id="relationshipFilter">
+                <option value="all">All relationships</option>
+              </select>
+            </label>
+            <label class="control-field">
+              <span>Minimum strength</span>
+              <div class="range-row">
+                <input id="weightFilter" type="range" min="0" max="10" value="0" />
+                <strong id="weightValue">0+</strong>
+              </div>
+            </label>
+            <div class="zoom-controls">
+              <button id="zoomOutButton" class="icon-button" aria-label="Zoom out">-</button>
+              <button id="zoomInButton" class="icon-button" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+
+          <div class="graph-stage">
+            <div class="graph-hud">
+              <span id="visiblePeoplePill" class="hud-pill">0 visible</span>
+              <span id="selectionPill" class="hud-pill hud-pill--active">All connections</span>
+              <span id="zoomPill" class="hud-pill">Zoom 100%</span>
+            </div>
+            <svg
+              id="graphCanvas"
+              viewBox="0 0 1200 760"
+              aria-label="Slack knowledge graph"
+            ></svg>
+          </div>
+        </section>
+
+        <aside class="insight-panel card">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow eyebrow--small">Connection Detail</p>
+              <h2>Insights</h2>
+            </div>
+            <button id="clearSelectionButton" class="ghost-button">Clear focus</button>
+          </div>
+
+          <div id="detailCard" class="detail-card">
+            <p>Select a person in the graph to see relationship details and top conversation topics.</p>
+          </div>
+
+          <section class="visible-panel">
+            <div class="visible-panel-header">
+              <h3>Visible people</h3>
+              <span id="visibleCountText">0 nodes</span>
+            </div>
+            <div id="visiblePeopleList" class="visible-people"></div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="./runtime-config.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

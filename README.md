@@ -67,10 +67,12 @@ GitHub Pages is static hosting, so Slack OAuth and live Slack graph fetch need a
 
 ## Architecture
 
-- `server.js`: Node server, Slack OAuth flow, Slack API requests, graph generation
+- `server.js`: thin server bootstrap
+- `src/server/`: modular backend pieces (config, request routes, Slack API client, graph builder, static handler)
 - `public/index.html`: UI shell
-- `public/styles.css`: visual design
-- `public/app.js`: browser logic and SVG network rendering
+- `public/styles.css`: visual design and responsive layout
+- `public/app.js`: frontend coordinator
+- `public/js/`: modular frontend logic (api, state, setup, viewport, graph rendering)
 
 ## Notes
 
